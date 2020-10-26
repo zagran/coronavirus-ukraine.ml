@@ -1,0 +1,464 @@
+<html>
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=UA-177243138-2"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+
+      gtag("js", new Date());
+
+      gtag("config", "UA-177243138-2");
+    </script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/data.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+    <script type="text/javascript">
+      window.onload = function() {
+        var colors = Highcharts.getOptions().colors;
+        var now = new Date().getTime();
+
+        Highcharts.getJSON("https://autoquest.org.ua/covid2/?json2", function(
+          data
+        ) {
+          data = data.reverse();
+          let positive_day = data.map((d) => [d["ts"] * 1000, d["new"]]);
+          let tests_day = data.map((d) => [d["ts"] * 1000, d["tests"]]).filter(d => d[0] < now);
+          let p_day = data.map((d) => [d["ts"] * 1000, d["p"]]).filter(d => d[0] < now);
+          let avg_day = data.map((d) => [d["ts"] * 1000, d["avg"]]).filter(d => d[0] < now);
+
+          //  MAIN
+          Highcharts.chart("chart", {
+            chart: {
+              zoomType: "x",
+            },
+            title: {
+              text: "Total cases / positive cases",
+            },
+            subtitle: {
+              text:
+                document.ontouchstart === undefined
+                  ? "Click and drag in the plot area to zoom in"
+                  : "Pinch the chart to zoom in",
+            },
+
+            xAxis: {
+              type: "datetime",
+            },
+            yAxis: {
+              title: {
+                text: "Cases count",
+              },
+            },
+            legend: {
+              enabled: false,
+            },
+            plotOptions: {
+              area: {
+                fillColor: {
+                  linearGradient: {
+                    x1: 0,
+                    y1: 0,
+                    x2: 0,
+                    y2: 1,
+                  },
+                  stops: [
+                    [0, Highcharts.getOptions().colors[0]],
+                    [
+                      1,
+                      Highcharts.color(Highcharts.getOptions().colors[0])
+                        .setOpacity(0)
+                        .get("rgba"),
+                    ],
+                  ],
+                },
+                marker: {
+                  radius: 2,
+                },
+                lineWidth: 1,
+                states: {
+                  hover: {
+                    lineWidth: 1,
+                  },
+                },
+                threshold: null,
+              },
+            },
+
+            series: [
+              {
+                type: "areaspline",
+                name: "Positive cases",
+                data: positive_day,
+                zoneAxis: 'x',
+                zones: [
+                  {
+                    value: now,
+                    color: 'rgb(124, 181, 236)'
+                  }, {
+                    color: colors[5],
+                    fillOpacity: 0.5
+                  },
+                ]
+              },
+              {
+                type: "area",
+                name: "Tests count",
+                data: tests_day,
+              },
+            ],
+          });
+          //  1
+          Highcharts.chart("chart1", {
+            chart: {
+              zoomType: "x",
+            },
+            title: {
+              text: "Positive cases per day",
+            },
+            subtitle: {
+              text:
+                document.ontouchstart === undefined
+                  ? "Click and drag in the plot area to zoom in"
+                  : "Pinch the chart to zoom in",
+            },
+            xAxis: {
+              type: "datetime",
+            },
+            yAxis: {
+              title: {
+                text: "Positive cases count",
+              },
+            },
+            legend: {
+              enabled: false,
+            },
+            plotOptions: {
+              area: {
+                fillColor: {
+                  linearGradient: {
+                    x1: 0,
+                    y1: 0,
+                    x2: 0,
+                    y2: 1,
+                  },
+                  stops: [
+                    [0, Highcharts.getOptions().colors[0]],
+                    [
+                      1,
+                      Highcharts.color(Highcharts.getOptions().colors[0])
+                        .setOpacity(0)
+                        .get("rgba"),
+                    ],
+                  ],
+                },
+                marker: {
+                  radius: 2,
+                },
+                lineWidth: 1,
+                states: {
+                  hover: {
+                    lineWidth: 1,
+                  },
+                },
+                threshold: null,
+              },
+            },
+
+            series: [
+              {
+                type: "area",
+                name: "Positive cases",
+                data: positive_day,
+                zoneAxis: 'x',
+                zones: [
+                  {
+                    value: now,
+                    color: 'rgb(124, 181, 236)'
+                  }, {
+                    color: colors[5]
+                  },
+                ]
+              },
+            ],
+          });
+
+          //  2
+          Highcharts.chart("chart2", {
+            chart: {
+              zoomType: "x",
+            },
+            title: {
+              text: "Tests per day",
+            },
+            subtitle: {
+              text:
+                document.ontouchstart === undefined
+                  ? "Click and drag in the plot area to zoom in"
+                  : "Pinch the chart to zoom in",
+            },
+            xAxis: {
+              type: "datetime",
+            },
+            yAxis: {
+              title: {
+                text: "Total tests count",
+              },
+            },
+            legend: {
+              enabled: false,
+            },
+            plotOptions: {
+              area: {
+                fillColor: {
+                  linearGradient: {
+                    x1: 0,
+                    y1: 0,
+                    x2: 0,
+                    y2: 1,
+                  },
+                  stops: [
+                    [0, Highcharts.getOptions().colors[0]],
+                    [
+                      1,
+                      Highcharts.color(Highcharts.getOptions().colors[0])
+                        .setOpacity(0)
+                        .get("rgba"),
+                    ],
+                  ],
+                },
+                marker: {
+                  radius: 2,
+                },
+                lineWidth: 1,
+                states: {
+                  hover: {
+                    lineWidth: 1,
+                  },
+                },
+                threshold: null,
+              },
+            },
+
+            series: [
+              {
+                type: "area",
+                name: "Tests count",
+                data: tests_day,
+              },
+            ],
+          });
+
+          //  3
+          Highcharts.chart("chart3", {
+            chart: {
+              zoomType: "x",
+            },
+            title: {
+              text: "% of positive cases",
+            },
+            subtitle: {
+              text:
+                document.ontouchstart === undefined
+                  ? "Click and drag in the plot area to zoom in"
+                  : "Pinch the chart to zoom in",
+            },
+            xAxis: {
+              type: "datetime",
+            },
+            yAxis: {
+              title: {
+                text: "% of positive cases",
+              },
+            },
+            legend: {
+              enabled: false,
+            },
+            plotOptions: {
+              area: {
+                fillColor: {
+                  linearGradient: {
+                    x1: 0,
+                    y1: 0,
+                    x2: 0,
+                    y2: 1,
+                  },
+                  stops: [
+                    [0, Highcharts.getOptions().colors[0]],
+                    [
+                      1,
+                      Highcharts.color(Highcharts.getOptions().colors[0])
+                        .setOpacity(0)
+                        .get("rgba"),
+                    ],
+                  ],
+                },
+                marker: {
+                  radius: 2,
+                },
+                lineWidth: 1,
+                states: {
+                  hover: {
+                    lineWidth: 1,
+                  },
+                },
+                threshold: null,
+              },
+            },
+
+            series: [
+              {
+                type: "area",
+                name: "Positive cases, %",
+                data: p_day,
+              },
+            ],
+          });
+
+          //  4
+          Highcharts.chart("chart4", {
+            chart: {
+              zoomType: "x",
+            },
+            title: {
+              text: "7 days average, %",
+            },
+            subtitle: {
+              text:
+                document.ontouchstart === undefined
+                  ? "Click and drag in the plot area to zoom in"
+                  : "Pinch the chart to zoom in",
+            },
+            xAxis: {
+              type: "datetime",
+            },
+            yAxis: {
+              title: {
+                text: "7d AVG, %",
+              },
+            },
+            legend: {
+              enabled: false,
+            },
+            plotOptions: {
+              area: {
+                fillColor: {
+                  linearGradient: {
+                    x1: 0,
+                    y1: 0,
+                    x2: 0,
+                    y2: 1,
+                  },
+                  stops: [
+                    [0, Highcharts.getOptions().colors[5]],
+                    [
+                      1,
+                      Highcharts.color(Highcharts.getOptions().colors[5])
+                        .setOpacity(0.1)
+                        .get("rgba"),
+                    ],
+                  ],
+                },
+                marker: {
+                  radius: 2,
+                },
+                lineWidth: 1,
+                states: {
+                  hover: {
+                    lineWidth: 1,
+                  },
+                },
+                threshold: null,
+              },
+            },
+
+            series: [
+              {
+                type: "area",
+                name: "7d AVG",
+                data: avg_day,
+              },
+            ],
+          });
+        });
+      };
+    </script>
+
+    <style>
+        .charts-bar {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            /*flex-direction: row;*/
+        }
+
+        .chart,
+        .highcharts-data-table table {
+            min-width: 50%;
+            max-width: 100%;
+            margin: 1em auto;
+        }
+
+        .chart {
+            height: 300px;
+        }
+
+        .highcharts-data-table table {
+            font-family: Verdana, sans-serif;
+            border-collapse: collapse;
+            border: 1px solid #ebebeb;
+            margin: 10px auto;
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .highcharts-data-table caption {
+            padding: 1em 0;
+            font-size: 1.2em;
+            color: #555;
+        }
+
+        .highcharts-data-table th {
+            font-weight: 600;
+            padding: 0.5em;
+        }
+
+        .highcharts-data-table td,
+        .highcharts-data-table th,
+        .highcharts-data-table caption {
+            padding: 0.5em;
+        }
+
+        .highcharts-data-table thead tr,
+        .highcharts-data-table tr:nth-child(even) {
+            background: #f8f8f8;
+        }
+
+        .highcharts-data-table tr:hover {
+            background: #f1f7ff;
+        }
+    </style>
+</head>
+
+<body>
+<div class="chart" id="chart"></div>
+<div class="charts-bar">
+    <div class="chart" id="chart1"></div>
+    <div class="chart" id="chart2"></div>
+</div>
+<div class="charts-bar">
+    <div class="chart" id="chart3"></div>
+    <div class="chart" id="chart4"></div>
+</div>
+</body>
+</html>
