@@ -1,19 +1,20 @@
 <html>
 <head>
+    <meta charset="utf-8">
+    <meta name="Description" CONTENT="То, что не публикует официальная статистика, но, что очень хочется знать. Ежедневно на основании официальных данных. https://t.me/coronavirus_ukraine">
+    <meta name="google-site-verification" content="+nxGUDJ4QpAZ5l9Bsjdi102tLVC21AIh5d1Nl23908vVuFHs34="/>
+    <title>Coronavirus Ukraine Statistics</title>
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script
-            async
-            src="https://www.googletagmanager.com/gtag/js?id=UA-177243138-2"
-    ></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-177243138-2"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-
       function gtag() {
         dataLayer.push(arguments);
       }
-
       gtag("js", new Date());
-
       gtag("config", "UA-177243138-2");
     </script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
@@ -26,7 +27,24 @@
       window.onload = function() {
         var colors = Highcharts.getOptions().colors;
         var now = new Date().getTime();
-
+        Highcharts.setOptions({
+          lang: {
+            loading: 'Загрузка...',
+            months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+            weekdays: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
+            shortMonths: ['Янв', 'Фев', 'Март', 'Апр', 'Май', 'Июнь', 'Июль', 'Авг', 'Сент', 'Окт', 'Нояб', 'Дек'],
+            exportButtonTitle: "Экспорт",
+            printButtonTitle: "Печать",
+            rangeSelectorFrom: "С",
+            rangeSelectorTo: "По",
+            rangeSelectorZoom: "Период",
+            downloadPNG: 'Скачать PNG',
+            downloadJPEG: 'Скачать JPEG',
+            downloadPDF: 'Скачать PDF',
+            downloadSVG: 'Скачать SVG',
+            printChart: 'Напечатать график'
+          }
+        });
         Highcharts.getJSON("https://autoquest.org.ua/covid2/?json2", function(
           data
         ) {
@@ -42,13 +60,13 @@
               zoomType: "x",
             },
             title: {
-              text: "Total cases / positive cases",
+              text: "Всего проведено тестов / Позитивных тестов",
             },
             subtitle: {
               text:
                 document.ontouchstart === undefined
-                  ? "Click and drag in the plot area to zoom in"
-                  : "Pinch the chart to zoom in",
+                  ? "Сделайте клик и перетащите область графика для увеличения"
+                  : "Сделайте щепок, чтобы увеличить",
             },
 
             xAxis: {
@@ -56,7 +74,7 @@
             },
             yAxis: {
               title: {
-                text: "Cases count",
+                text: "Количество тестов",
               },
             },
             legend: {
@@ -97,7 +115,7 @@
             series: [
               {
                 type: "areaspline",
-                name: "Positive cases",
+                name: "Количество положительных тестов",
                 data: positive_day,
                 zoneAxis: 'x',
                 zones: [
@@ -105,8 +123,7 @@
                     value: now,
                     color: 'rgb(124, 181, 236)'
                   }, {
-                    color: colors[5],
-                    fillOpacity: 0.5
+                    color: colors[5]
                   },
                 ]
               },
@@ -123,20 +140,20 @@
               zoomType: "x",
             },
             title: {
-              text: "Positive cases per day",
+              text: "Количество положительных тестов в день",
             },
             subtitle: {
               text:
                 document.ontouchstart === undefined
-                  ? "Click and drag in the plot area to zoom in"
-                  : "Pinch the chart to zoom in",
+                  ? "Сделайте клик и перетащите область графика для увеличения"
+                  : "Сделайте щепок, чтобы увеличить",
             },
             xAxis: {
               type: "datetime",
             },
             yAxis: {
               title: {
-                text: "Positive cases count",
+                text: "Количество положительных тестов",
               },
             },
             legend: {
@@ -177,7 +194,7 @@
             series: [
               {
                 type: "area",
-                name: "Positive cases",
+                name: "Количество положительных тестов",
                 data: positive_day,
                 zoneAxis: 'x',
                 zones: [
@@ -198,20 +215,20 @@
               zoomType: "x",
             },
             title: {
-              text: "Tests per day",
+              text: "Общее колличество тестов в день",
             },
             subtitle: {
               text:
                 document.ontouchstart === undefined
-                  ? "Click and drag in the plot area to zoom in"
-                  : "Pinch the chart to zoom in",
+                  ? "Сделайте клик и перетащите область графика для увеличения"
+                  : "Сделайте щепок, чтобы увеличить",
             },
             xAxis: {
               type: "datetime",
             },
             yAxis: {
               title: {
-                text: "Total tests count",
+                text: "Общее колличество тестов",
               },
             },
             legend: {
@@ -252,7 +269,7 @@
             series: [
               {
                 type: "area",
-                name: "Tests count",
+                name: "Колличество тестов",
                 data: tests_day,
               },
             ],
@@ -264,20 +281,20 @@
               zoomType: "x",
             },
             title: {
-              text: "% of positive cases",
+              text: "% положительных тестов",
             },
             subtitle: {
               text:
                 document.ontouchstart === undefined
-                  ? "Click and drag in the plot area to zoom in"
-                  : "Pinch the chart to zoom in",
+                  ? "Сделайте клик и перетащите область графика для увеличения"
+                  : "Сделайте щепок, чтобы увеличить",
             },
             xAxis: {
               type: "datetime",
             },
             yAxis: {
               title: {
-                text: "% of positive cases",
+                text: "% положительных тестов",
               },
             },
             legend: {
@@ -318,7 +335,7 @@
             series: [
               {
                 type: "area",
-                name: "Positive cases, %",
+                name: "Положительных тестов, %",
                 data: p_day,
               },
             ],
@@ -330,20 +347,20 @@
               zoomType: "x",
             },
             title: {
-              text: "7 days average, %",
+              text: "Среднее за предыдущие 7 дней, %",
             },
             subtitle: {
               text:
                 document.ontouchstart === undefined
-                  ? "Click and drag in the plot area to zoom in"
-                  : "Pinch the chart to zoom in",
+                  ? "Сделайте клик и перетащите область графика для увеличения"
+                  : "Сделайте щепок, чтобы увеличить",
             },
             xAxis: {
               type: "datetime",
             },
             yAxis: {
               title: {
-                text: "7d AVG, %",
+                text: "Среднее за 7 дней, %",
               },
             },
             legend: {
@@ -384,7 +401,7 @@
             series: [
               {
                 type: "area",
-                name: "7d AVG",
+                name: "Среднее за 7 дней",
                 data: avg_day,
               },
             ],
